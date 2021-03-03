@@ -90,7 +90,7 @@ def miller_rabin(n, k = 5):
         if x == 1 or x == n - 1:
             continue
         for _ in range(r - 1):
-             """Keep squaring x while one of the following doesn't happen 
+            """Keep squaring x while one of the following doesn't happen 
                 (i) d does not reach n-1 
                 (ii) (x^2) % n is not 1 
                 (iii) (x^2) % n is not n-1"""
@@ -103,13 +103,8 @@ def miller_rabin(n, k = 5):
 
 
 def main():
-    k = 4
-
-    print("All primes smaller than 100: ")
-    for n in range(1, 100):
-        if (miller_rabin(n, k)):
-            print(n, end=" ")
-    print('Library for RSA cryptopsystem')
+    print("RSA Cryptosystem".center(50))
+    print("Choose one of hte following:\n1:Encrypt\n2:Decrypt")
 
 ###########################################################
 
