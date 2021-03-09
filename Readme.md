@@ -13,7 +13,7 @@ RSA Algorithm based on the extended Euclidean algorithm, the fast modular expone
 - [RSA](https://www.geeksforgeeks.org/rsa-algorithm-cryptography/)
 - [Wikipedia](https://en.wikipedia.org/wiki/RSA_(cryptosystem))
 - [Extended Eucleadian](http://www-math.ucdenver.edu/~wcherowi/courses/m5410/exeucalg.html)
-- [Fast modular exponentiation](https://docs.python.org/3/library/functions.html#pow)
+- [Fast modular exponentiation](https://observablehq.com/@beardofdoom/fast-modular-exponentiation)
 - [Chinese Remainder Algo](https://www.geeksforgeeks.org/chinese-remainder-theorem-set-1-introduction/)
 - [Miller-Rabin Primality](https://crypto.stanford.edu/pbc/notes/numbertheory/millerrabin.html)
 

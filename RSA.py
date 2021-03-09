@@ -25,17 +25,17 @@ def multiplicativeInverse(a, b, n):
     :returns: multiplicative Inverse of two numbers
     :rtpe:int
     """
-    d, x, y = extended_eucleadian(a, n)
+    d, x, _ = extended_eucleadian(a, n)
     if b % d == 0:
-        temp_x = (x * (b/d)) % n
+        temp_x = (x * (b//d)) % n
         result = []
         for i in range(d):
-            result.append((temp_x + i*(n/d)) % n)
+            result.append((temp_x + i*(n//d)) % n)
         return result
     return []
 
 
-def modular_exponentiation(a, b, c):
+def modular_exponentiation(a, b, m):
     """
     The fast modular exponentiation algorithm.
 
@@ -46,7 +46,16 @@ def modular_exponentiation(a, b, c):
     :returns: Modular Exponentiation (A^B mod C)
     :rtype: int
     """
-    return pow(a, b, c)
+
+    Y = 1
+    while b > 0:
+        if b % 2 == 0:
+            a = (a * a) % m
+            b = b//2
+        else:
+            Y = (a * Y) % m
+            b = b - 1
+    return Y
 
 
 def chineese_remainer(numbers, remainders):
@@ -83,7 +92,7 @@ def miller_rabin(n, k=5):
     Miller-Rabin Primality Test.
 
     :param int: number to be tested
-    :param int: Number of iterations to be performed
+    :param int: Integer a
 
     :returns: A return value of False means n is certainly not prime. A return value of True means n is very likely a prime
     :rtype: boolean
@@ -106,16 +115,34 @@ def miller_rabin(n, k=5):
         if x == 1 or x == n - 1:
             continue
         for _ in range(r - 1):
-            """Keep squaring x while one of the following doesn't happen 
+            '''Keep squaring x while one of the following doesn't happen 
                 (i) d does not reach n-1 
                 (ii) (x^2) % n is not 1 
-                (iii) (x^2) % n is not n-1"""
+                (iii) (x^2) % n is not n-1'''
             x = modular_exponentiation(x, 2, n)
             if x == n - 1:
                 break
         else:
             return False
     return True
+
+    """
+    d = p = n-1
+    S = 0
+    while True:
+        if p % 2 != 0:
+            break
+        p = p//2
+        S += 1
+        d = p % 2
+    if modular_exponentiation(a,d,n) == 1:
+        return True
+    for i in range(1,S):
+        ff = modular_exponentiation(a,2**i*d,n)
+        if ff == n-1:
+            return True
+    return False
+    """
 
 
 def getBigRandomPrime(b):
@@ -132,19 +159,23 @@ def getBigRandomPrime(b):
 
     while True:
         p = getrandbits(b)
+
+        primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239,
+                  241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419, 421, 431, 433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491, 499, 503, 509, 521, 523, 541]
+        if any(p % x == 0 for x in primes):
+            continue
         if miller_rabin(p):
             return p
 
 
-def generate_keys():
+def generate_keys(b):
     """
     Generate Public and Private Keys
 
     :returns: Public and private Keys
     """
-    p = getBigRandomPrime(20)
-    q = getBigRandomPrime(20)
-    print(p, q)
+    p = getBigRandomPrime(b)
+    q = getBigRandomPrime(b)
     e = 3
     n = p*q
 
@@ -187,7 +218,8 @@ def decrypt(keys, cipher):
     :rtype: string
     """
     d, n = keys
-    result = [chr(modular_exponentiation(c, d, n)) for c in cipher]
+    result = [chr(modular_exponentiation(int(c), d, n))
+              for c in cipher.split(' ')]
     return ''.join(result)
 
 
@@ -216,7 +248,7 @@ def main():
         message = get_string("Enter your message:\n")
         print("Enter Public Key")
         e = get_int("Enter e: ")
-        n = get_int("Enter n: ")
+        n = int(input("Enter n: "))
 
         cipher = encrypt((e, n), message)
         res = user_input_for_result()
@@ -230,11 +262,10 @@ def main():
         """
         Method responsible for taking inputs and calling decrypt fucntion.
         """
-        cipher = get_string("Enter the cipher:\n").split(' ')
-        cipher = [int(c) for c in cipher]
+        cipher = input("Enter the cipher:\n")
         print("Enter Private Key")
-        d = get_int("Enter d: ")
-        n = get_int("Enter n: ")
+        d = int(input("Enter d: "))
+        n = int(input("Enter n: "))
 
         message = decrypt((d, n), cipher)
         res = user_input_for_result()
@@ -277,7 +308,7 @@ def main():
     elif inputted_value == 2:
         decryption()
     else:
-        n, e, d = generate_keys()
+        n, e, d = generate_keys(2048)
         print_keys(n, e, d)
 
 
