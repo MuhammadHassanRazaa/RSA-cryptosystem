@@ -1,11 +1,11 @@
 def extended_eucleadian(p, q):
     """
-    Extended Eucleadian Algorithm to find inverse of Number.
+    Extended Eucleadian Algorithm.
 
     :param int: 1st Number.
     :param int: 2nd Number.
 
-    :returns: tuple [d, a, b] such that d = extended_eucleadian(p, q), ap + bq = d
+    :returns: tuple [gcd(p,q), a, b] such that d = extended_eucleadian(p, q), px + qy = gcd(p,q)
     :rtype: tuple<int>
     """
     if p == 0:
@@ -15,24 +15,16 @@ def extended_eucleadian(p, q):
         return gcd, y - (q // p) * x, x
 
 
-def multiplicativeInverse(a, b, n):
+def modular_Inverse(a, b):
     """
-    Generating multiplicative inverse of given numbers (a,b modulo n)
+    Generating modular inverse of given numbers (a,b)
     :param int: first number
     :param int 2nd number
-    :param int: module operation number
 
-    :returns: multiplicative Inverse of two numbers
+    :returns: modular Inverse of two numbers
     :rtpe:int
     """
-    d, x, _ = extended_eucleadian(a, n)
-    if b % d == 0:
-        temp_x = (x * (b//d)) % n
-        result = []
-        for i in range(d):
-            result.append((temp_x + i*(n//d)) % n)
-        return result
-    return []
+    return extended_eucleadian(a, b)[1]
 
 
 def modular_exponentiation(a, b, m):
@@ -181,11 +173,45 @@ def generate_keys(b):
 
     pi_n = (p-1)*(q-1)
 
-    while not (extended_eucleadian(pi_n, e)[0] == 1):
+    while not (extended_eucleadian(e, pi_n)[0] == 1):
         e = e+1
-    d = int(multiplicativeInverse(e, 1, pi_n)[0])
 
+    #jkh = multiplicativeInverse(e, 1, pi_n)[0]
+    # print("sdjkfh"+str(modular_exponentiation(e,1,pi_n)))
+    # print(jkh)
+    k = 2
+    #d=(1 + (k*pi_n))//e
+    d = modular_Inverse(e, pi_n)
+    # d=private_key(pi_n,e)
     return n, e, d
+
+
+def private_key(pi_n, e):
+    """
+    Generate d of private Key.
+
+    :param int: phi_n 
+    :param int: e
+
+    """
+    a = [1, 0]
+    b = [0, 1]
+    d = [pi_n, e]
+    k = [-1, pi_n//e]
+    i = 2
+    while(d[i-1] != 1):
+        a.append(a[i-2] - (a[i-1] * k[i-1]))
+        b.append(b[i-2] - (b[i-1] * k[i-1]))
+        d.append(d[i-2] - (d[i-1] * k[i-1]))
+        k.append((d[i-1]-1)//d[i-1])
+        i += 1
+
+    if b[i-1] > pi_n:
+        b = b[i-1] % pi_n
+    else:
+        b = b[i-1]+pi_n
+
+    return b
 
 
 def encrypt(keys, message):
@@ -220,6 +246,7 @@ def decrypt(keys, cipher):
     d, n = keys
     result = [chr(modular_exponentiation(int(c), d, n))
               for c in cipher.split(' ')]
+
     return ''.join(result)
 
 
