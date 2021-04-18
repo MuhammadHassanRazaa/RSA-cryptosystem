@@ -186,34 +186,6 @@ def generate_keys(b):
     return n, e, d
 
 
-def private_key(pi_n, e):
-    """
-    Generate d of private Key.
-
-    :param int: phi_n 
-    :param int: e
-
-    """
-    a = [1, 0]
-    b = [0, 1]
-    d = [pi_n, e]
-    k = [-1, pi_n//e]
-    i = 2
-    while(d[i-1] != 1):
-        a.append(a[i-2] - (a[i-1] * k[i-1]))
-        b.append(b[i-2] - (b[i-1] * k[i-1]))
-        d.append(d[i-2] - (d[i-1] * k[i-1]))
-        k.append((d[i-1]-1)//d[i-1])
-        i += 1
-
-    if b[i-1] > pi_n:
-        b = b[i-1] % pi_n
-    else:
-        b = b[i-1]+pi_n
-
-    return b
-
-
 def encrypt(keys, message):
     """
     Encrypt the message.
