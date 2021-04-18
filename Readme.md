@@ -10,11 +10,11 @@ RSA Algorithm based on the extended Euclidean algorithm, the fast modular expone
 - [cs50.get_string](https://github.com/cs50/python-cs50)
 
 ## References
-- [RSA](https://www.geeksforgeeks.org/rsa-algorithm-cryptography/)
+- [RSA](https://observablehq.com/@beardofdoom/rsa)
 - [RSA 2](https://www.di-mgt.com.au/rsa_alg.html#notespractical)
 - [Wikipedia](https://en.wikipedia.org/wiki/RSA_(cryptosystem))
 - [Extended Eucleadian](http://www-math.ucdenver.edu/~wcherowi/courses/m5410/exeucalg.html)
-- [Extended Eucleadian 2](https://www.geeksforgeeks.org/euclidean-algorithms-basic-and-extended/)
+- [Extended Eucleadian 2](https://observablehq.com/@beardofdoom/extended-euclidean-algorithm)
 - [Fast modular exponentiation](https://observablehq.com/@beardofdoom/fast-modular-exponentiation)
 - [Chinese Remainder Algo](https://www.geeksforgeeks.org/chinese-remainder-theorem-set-1-introduction/)
 - [Miller-Rabin Primality](https://crypto.stanford.edu/pbc/notes/numbertheory/millerrabin.html)

@@ -50,44 +50,52 @@ def modular_exponentiation(a, b, m):
     return Y
 
 
-def chineese_remainer(numbers, remainders):
+def chineese_remainer_for_decryption(c, a, b, d):
     """
-    Chinese Remainder Theorem.
+    Chineese Remainder Theorem for RSA Decryption.
 
-    It will calculate minimum positive number x such that numbers and remainders are given by using following formula:
-    x =  ( ∑ (remainder[i]*pp[i]*Modular_Multiplictive_Inverse[i]) ) % product_of_all_numbers
-    Where 0 <= i <= n-1 and 
-    pp[i] is product of all divided by num[i]
+    :param int: cipher
+    :param int: 1st Prime
+    :param int: 2nd Prime
+    :param int: decryption key
 
-    :param list<int>: numbers
-    :param list<int>: remainders
-
-    :returns: x  =  ( ∑ (remainder[i]*pp[i]*Modular_Multiplictive_Inverse[i]) ) % product_of_all_numbers
+    :returns: m  =  decrypted message
     :rtype: int
     """
-    from math import prod
-    product = prod(numbers)
+    dp = d % (p-1)
+    dq = d % (q-1)
+    mp = modular_exponentiation(c, dp, p)
+    mq = modular_exponentiation(c, dq, q)
 
-    result = 0
-    for index, number in enumerate(numbers):
-        pp = product // number
-        inverse = extended_eucleadian(pp, number)[1]
-        if inverse < 0:
-            inverse += number
-        result += remainders[index] * inverse * pp
+    _, yp,yq = extended_eucleadian(p, q)
 
-    return result % product
-
+    return ((mp * q * yq) + (mq * p * yp)) % (p * q)
 
 def miller_rabin(n, k=5):
     """
     Miller-Rabin Primality Test.
 
     :param int: number to be tested
-    :param int: Integer a
+    :param int: Integer k
 
     :returns: A return value of False means n is certainly not prime. A return value of True means n is very likely a prime
     :rtype: boolean
+    """
+
+    p = n-1
+    S = 0
+    while(p % 2 != 0):
+        p = p//2
+        S += 1
+
+    if modular_exponentiation(k, p, n) == 1:
+        return True
+    else:
+        for i in range(1,S):
+            if n - 1 == pow(k, pow(2,i) * p):
+                return True
+        return False
+    return False
     """
     from random import randrange
     if (n <= 1 or n == 4):
@@ -117,7 +125,7 @@ def miller_rabin(n, k=5):
         else:
             return False
     return True
-
+    """
     """
     d = p = n-1
     S = 0
