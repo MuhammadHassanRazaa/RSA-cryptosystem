@@ -184,13 +184,7 @@ def generate_keys(b):
     while not (extended_eucleadian(e, pi_n)[0] == 1):
         e = e+1
 
-    #jkh = multiplicativeInverse(e, 1, pi_n)[0]
-    # print("sdjkfh"+str(modular_exponentiation(e,1,pi_n)))
-    # print(jkh)
-    k = 2
-    #d=(1 + (k*pi_n))//e
-    d = modular_Inverse(e, pi_n)
-    # d=private_key(pi_n,e)
+    d = modular_Inverse(e, pi_n) % pi_n
     return n, e, d
 
 
