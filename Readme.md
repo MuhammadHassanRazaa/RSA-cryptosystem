@@ -3,7 +3,6 @@
 RSA Algorithm based on the extended Euclidean algorithm, the fast modular exponentiation algorithm, the Chinese remainder algorithm and the miller-Rabin primality test algorithm.
 
 ## Libraries Used
-- [math.prod](https://docs.python.org/3/library/math.html)
 - [random.randrange](https://docs.python.org/3/library/random.html)
 - [random.getrandbits](https://docs.python.org/3/library/random.html)
 - [cs50.get_int](https://github.com/cs50/python-cs50)
